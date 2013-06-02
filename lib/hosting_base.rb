@@ -3,6 +3,8 @@
 
 require 'oauth'
 require 'oauth/consumer'
+require 'rest-client'
+require 'pry'
 
 require_relative './gitpit_config.rb'
 
@@ -14,9 +16,8 @@ class HostingBase
 
   def authentification(site_url)
     begin
-      print "   Consumer key: "
+      print "Consumer key   : "
       consumer_key = STDIN.gets.strip
-
       print "Consumer secret: "
       consumer_secret = STDIN.gets.strip
 
@@ -47,19 +48,30 @@ class HostingBase
       config = @config.get(self.class)
       config[:access_token] = access_token
       config[:access_secret] = access_secret
-
+      @config.set(self.class, config)
       @config.save
+
+      puts "Success!"
     rescue
       STDERR.puts "Authentification failed"
       retry
     end
   end
 
-  def create
+  def api_request(url, params, method)
+    puts JSON.generate(params)
+    begin
+      res =
+        if method == :post
+          RestClient.post(url, JSON.generate(params), authorization: "bearer #{params[:access_token]}", content_type: :json)
+        else
+          RestClient.get(url, {params: params})
+        end
 
-  end
-
-  def list
-
+      JSON.parse(res.body)
+    rescue
+      STDERR.puts "Error has occured"
+      nil
+    end
   end
 end
