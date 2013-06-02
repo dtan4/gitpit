@@ -47,8 +47,13 @@ class GitHub < HostingBase
     result = api_request(url, params, :post)
 
     if result
-      puts result["id"]
-      #
+      repo_url_ssh = result["ssh_url"]
+      puts "Remote repository was created on GitHub."
+      puts result["html_url"]
+
+      # add remote repository to .git/config
+      system("git remote add origin #{repo_url_ssh}")
+      puts "Remote repository origin was registrated."
     end
   end
 
@@ -60,7 +65,6 @@ class GitHub < HostingBase
 
     result.each do |repo|
       puts repo["name"]
-      #
     end if result
   end
 end
