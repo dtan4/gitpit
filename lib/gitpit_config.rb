@@ -33,10 +33,10 @@ class GitpitConfig
   end
 
   def get(service)
-    @config[service] || {}
+    @config[service.to_s] || {}
   end
 
   def set(service, params)
-    @config[service] = params
+    @config[service.to_s] = params
   end
 end
