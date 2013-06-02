@@ -23,9 +23,9 @@ class Gitpit
     when 'init'
       @hosting.init
     when 'create'
-      @hosting.create_repository(scope, repository)
+      @hosting.create(scope, repository)
     when 'list'
-      @hosting.list_repositories(scope)
+      @hosting.list(scope)
     else
       #something
       exit 1
