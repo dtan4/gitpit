@@ -10,7 +10,7 @@ class GitHub < HostingBase
   def init
     params = {}
 
-    params[:scopes] = ["repo"]
+    params[:scopes] = ["repo", "gist"]
     params[:note] = "gitpit"
 
     begin
